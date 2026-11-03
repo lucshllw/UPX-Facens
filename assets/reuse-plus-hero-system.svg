@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000" role="img" aria-label="ReUse+ green circular logistics system">
+  <defs>
+    <linearGradient id="wash" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset=".52" stop-color="#f6fbf4"/>
+      <stop offset="1" stop-color="#dff3e7"/>
+    </linearGradient>
+    <radialGradient id="glow" cx=".25" cy=".2" r=".8">
+      <stop offset="0" stop-color="#36a852" stop-opacity=".24"/>
+      <stop offset=".5" stop-color="#36a852" stop-opacity=".06"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1600" height="1000" fill="url(#wash)"/>
+  <rect width="1600" height="1000" fill="url(#glow)"/>
+  <g stroke="#0b3d2e" stroke-opacity=".12" stroke-width="1">
+    <path d="M0 120h1600M0 240h1600M0 360h1600M0 480h1600M0 600h1600M0 720h1600M0 840h1600"/>
+    <path d="M120 0v1000M240 0v1000M360 0v1000M480 0v1000M600 0v1000M720 0v1000M840 0v1000M960 0v1000M1080 0v1000M1200 0v1000M1320 0v1000M1440 0v1000"/>
+  </g>
+  <g fill="#ffffff" stroke="#b7d5bf" stroke-width="2">
+    <path d="M210 654h324v152H210z"/>
+    <path d="M236 604h270v50H236z"/>
+    <path d="M1054 548h296v214h-296z"/>
+    <path d="M1087 500h230v48h-230z"/>
+    <path d="M650 382h258v198H650z"/>
+    <path d="M697 330h164v52H697z"/>
+  </g>
+  <g fill="none" stroke="#0b3d2e" stroke-width="2" stroke-opacity=".78">
+    <circle cx="780" cy="500" r="255"/>
+    <path d="M542 410c70-126 232-174 360-104"/>
+    <path d="M1016 593c-72 123-234 166-360 94"/>
+    <path d="M906 306l106 0-54 92"/>
+    <path d="M654 696l-106 0 54-92"/>
+  </g>
+  <g stroke="#36a852" stroke-opacity=".55" stroke-width="1.5">
+    <path d="M252 690h238M252 726h238M252 762h238"/>
+    <path d="M1092 590h220M1092 626h220M1092 662h220M1092 698h220"/>
+    <path d="M688 425h182M688 462h182M688 499h182"/>
+  </g>
+  <g fill="#36a852" opacity=".78">
+    <path d="M344 622c38-46 94-60 158-38-56 76-108 94-158 38Z"/>
+    <path d="M1165 520c46-42 98-50 158-22-62 69-116 80-158 22Z"/>
+    <path d="M738 324c35-38 82-48 132-28-48 58-95 70-132 28Z"/>
+  </g>
+  <g fill="#0b3d2e">
+    <text x="60" y="80" font-family="Space Mono, IBM Plex Mono, monospace" font-size="20" letter-spacing="3">REUSE+ / MATERIAL EXCHANGE NODE</text>
+    <text x="60" y="930" font-family="Space Mono, IBM Plex Mono, monospace" font-size="15" letter-spacing="2">ACTIVE USERS / LOCAL IMPACT / CIRCULAR LOGISTICS</text>
+    <text x="1160" y="128" font-family="Space Mono, IBM Plex Mono, monospace" font-size="12" letter-spacing="2">COMMUNITY GRID</text>
+    <text x="1160" y="154" font-family="Space Mono, IBM Plex Mono, monospace" font-size="12" letter-spacing="2">DONATION / EXCHANGE / CHAT</text>
+  </g>
+  <g fill="none" stroke="#1f8a55" stroke-opacity=".65" stroke-width="1.5">
+    <path d="M1040 140h94M1040 140v70"/>
+    <path d="M1340 450h-120M1340 450v-84"/>
+    <path d="M188 560h120M188 560v-72"/>
+    <path d="M620 250h120M620 250v-66"/>
+  </g>
+</svg>

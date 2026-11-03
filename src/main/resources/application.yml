@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: reuse-plus
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/reuseplus}
+    username: ${DB_USER:reuseplus}
+    password: ${DB_PASSWORD:reuseplus}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+  flyway:
+    enabled: true
+  servlet:
+    multipart:
+      max-file-size: 8MB
+      max-request-size: 9MB
+
+server:
+  port: ${PORT:8080}
+  compression:
+    enabled: true
+    min-response-size: 2KB
+    mime-types: text/html,text/css,text/javascript,application/javascript,application/json,image/svg+xml
+
+app:
+  jwt:
+    secret: ${JWT_SECRET:reuse-plus-local-development-secret-change-before-production}
+    expiration-minutes: ${JWT_EXPIRATION_MINUTES:1440}

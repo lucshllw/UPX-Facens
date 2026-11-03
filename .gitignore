@@ -1,0 +1,26 @@
+target/
+.reuse-tools/
+.reuse-data/
+.reuse-backup/
+node_modules/
+validation/tmp/
+
+# Private local data, evidence and credentials
+validation/
+RELATORIO_REUSE.md
+.env
+.env.*
+!.env.example
+!.env.sample
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+*.log
+*.mv.db
+*.trace.db
+uploads/
+.DS_Store
+Thumbs.db

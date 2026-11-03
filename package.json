@@ -1,0 +1,11 @@
+{
+  "name": "reuse-plus-static-preview",
+  "version": "0.5.1",
+  "private": true,
+  "description": "ReUse+ — galeria circular com versão local e servidor Java.",
+  "scripts": {
+    "start": "node tools/serve.js",
+    "sync": "node tools/sync-static.js",
+    "check": "node --check script.js && node --check sw.js && node --check tools/serve.js && node --check assets/scene3d.mjs && node --check assets/scene-models.mjs && node --check assets/scene-entry.mjs && node --check assets/typography.mjs && node --check assets/scene-check.mjs && node tools/smoke-test.js && node tools/perf-budget.js && node --test tools/scene.test.mjs"
+  }
+}

@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="1000" viewBox="0 0 1400 1000" role="img" aria-label="ReUse+ green reuse workbench">
+  <defs>
+    <linearGradient id="paper" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset=".6" stop-color="#f6fbf4"/>
+      <stop offset="1" stop-color="#edf6ec"/>
+    </linearGradient>
+    <radialGradient id="leafGlow" cx=".55" cy=".18" r=".72">
+      <stop offset="0" stop-color="#36a852" stop-opacity=".18"/>
+      <stop offset=".54" stop-color="#36a852" stop-opacity=".04"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1400" height="1000" fill="url(#paper)"/>
+  <rect width="1400" height="1000" fill="url(#leafGlow)"/>
+  <g stroke="#0b3d2e" stroke-opacity=".1" stroke-width="1">
+    <path d="M0 166h1400M0 332h1400M0 498h1400M0 664h1400M0 830h1400"/>
+    <path d="M140 0v1000M280 0v1000M420 0v1000M560 0v1000M700 0v1000M840 0v1000M980 0v1000M1120 0v1000M1260 0v1000"/>
+  </g>
+  <g fill="#ffffff" stroke="#b7d5bf" stroke-width="2">
+    <path d="M92 678h1216v132H92z"/>
+    <path d="M178 484h288v194H178z"/>
+    <path d="M560 396h272v282H560z"/>
+    <path d="M934 520h296v158H934z"/>
+    <path d="M1010 396h146v124h-146z"/>
+  </g>
+  <g fill="none" stroke="#0b3d2e" stroke-opacity=".64" stroke-width="2">
+    <path d="M602 452h188M602 500h188M602 548h188M602 596h188"/>
+    <path d="M216 526h214M216 574h214M216 622h214"/>
+    <path d="M976 562h216M976 610h216"/>
+    <path d="M716 246c110 6 204 78 236 180"/>
+    <path d="M956 420l32 78-84-22"/>
+    <path d="M694 854c-128-16-224-106-252-220"/>
+    <path d="M440 638l-26-82 82 30"/>
+  </g>
+  <g fill="#0b3d2e">
+    <text x="82" y="86" font-family="Space Mono, IBM Plex Mono, monospace" font-size="18" letter-spacing="3">REUSE+ WORKBENCH</text>
+    <text x="82" y="114" font-family="Space Mono, IBM Plex Mono, monospace" font-size="12" letter-spacing="2">OBJECTS / REPAIR / REDISTRIBUTION</text>
+    <text x="990" y="872" font-family="Space Mono, IBM Plex Mono, monospace" font-size="12" letter-spacing="2">COMMUNITY PROOF REQUIRED</text>
+  </g>
+  <g fill="#36a852" opacity=".78">
+    <path d="M260 452c42-50 102-62 174-34-62 78-120 94-174 34Z"/>
+    <path d="M1028 364c35-38 84-46 136-22-50 60-96 72-136 22Z"/>
+    <path d="M958 498c28-28 64-34 104-18-36 44-72 54-104 18Z"/>
+  </g>
+</svg>

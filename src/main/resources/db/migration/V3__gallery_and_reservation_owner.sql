@@ -1,0 +1,3 @@
+ALTER TABLE items ADD COLUMN location VARCHAR(120);
+ALTER TABLE items ADD COLUMN gallery_urls TEXT;
+ALTER TABLE items ADD COLUMN reserved_by_id BIGINT REFERENCES app_users(id) ON DELETE SET NULL;

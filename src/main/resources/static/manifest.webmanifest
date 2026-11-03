@@ -1,0 +1,17 @@
+{
+  "name": "ReUse+",
+  "short_name": "ReUse+",
+  "description": "Encontre objetos. Conecte pessoas. Faça circular.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#FFFFFF",
+  "theme_color": "#167A45",
+  "icons": [
+    {
+      "src": "assets/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

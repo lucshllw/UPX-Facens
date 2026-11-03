@@ -1,0 +1,18 @@
+# Local development only. Production continues to use PostgreSQL + Flyway.
+spring:
+  datasource:
+    url: jdbc:h2:file:./.reuse-data/community;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DEFAULT_NULL_ORDERING=HIGH
+    username: sa
+    password: ""
+    driver-class-name: org.h2.Driver
+  flyway:
+    enabled: false
+  jpa:
+    hibernate:
+      ddl-auto: update
+    defer-datasource-initialization: true
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:db/dev-engagement.sql
+      data-locations: classpath:db/dev-categories.sql

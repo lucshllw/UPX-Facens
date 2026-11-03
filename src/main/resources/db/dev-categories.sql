@@ -1,0 +1,5 @@
+INSERT INTO categories(name,slug,description,created_at) SELECT 'Moveis','moveis','Moveis para novas historias.',CURRENT_TIMESTAMP WHERE NOT EXISTS (SELECT 1 FROM categories WHERE slug='moveis');
+INSERT INTO categories(name,slug,description,created_at) SELECT 'Roupas','roupas','Pecas prontas para circular.',CURRENT_TIMESTAMP WHERE NOT EXISTS (SELECT 1 FROM categories WHERE slug='roupas');
+INSERT INTO categories(name,slug,description,created_at) SELECT 'Eletronicos','eletronicos','Aparelhos e acessorios funcionais.',CURRENT_TIMESTAMP WHERE NOT EXISTS (SELECT 1 FROM categories WHERE slug='eletronicos');
+INSERT INTO categories(name,slug,description,created_at) SELECT 'Livros','livros','Leituras para um novo capitulo.',CURRENT_TIMESTAMP WHERE NOT EXISTS (SELECT 1 FROM categories WHERE slug='livros');
+INSERT INTO categories(name,slug,description,created_at) SELECT 'Casa','casa','Objetos e utensilios para casa.',CURRENT_TIMESTAMP WHERE NOT EXISTS (SELECT 1 FROM categories WHERE slug='casa');

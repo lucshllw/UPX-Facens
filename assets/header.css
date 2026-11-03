@@ -1,0 +1,44 @@
+/* Dark menu: original logo extruded with CSS 3D; no additional render loop. */
+.site-header{
+ --header-bg:#0B0F0D;--header-text:#EEF6F0;--header-muted:#C3CEC7;--header-accent:#8CDFAD;--header-control:#A6F0C4;
+ background:var(--header-bg);color:var(--header-text);border-bottom:1px solid #35453B;backdrop-filter:none;isolation:isolate;overflow:hidden;box-shadow:0 8px 28px #1023180c;
+}
+.site-header::before{
+ content:'';position:absolute;inset:-100% -10%;z-index:-1;pointer-events:none;
+ background:radial-gradient(ellipse at 22% 70%,#3F8A6140,transparent 34%),radial-gradient(ellipse at 78% 25%,#54836B30,transparent 36%),repeating-linear-gradient(115deg,transparent 0,transparent 100px,#99D2AC0B 101px,transparent 103px);
+ animation:header-drift 18s ease-in-out infinite alternate;
+}
+.site-header::after{
+ content:'';position:absolute;bottom:0;left:-30%;width:45%;height:1px;pointer-events:none;background:linear-gradient(90deg,transparent,#8CDFAD80,transparent);animation:header-trace 16s linear infinite;
+}
+.site-header .header-inner{position:relative}
+.site-header .brand{color:var(--header-text);flex-shrink:0}
+.site-header .brand-plus{color:var(--header-accent)}
+.site-header .main-nav a,.site-header .main-nav button{color:var(--header-muted)}
+.site-header .main-nav a:hover,.site-header .main-nav button:hover,.site-header .login-link:hover{color:var(--header-accent)}
+.site-header .main-nav a::after,.site-header .main-nav button::after{background:var(--header-accent)}
+.site-header .login-link{color:var(--header-text)}
+.site-header .account-nav .icon-button{color:var(--header-text);background:#FFFFFF06;border:1px solid #35453B;transition:background var(--motion-fast),border-color var(--motion-fast)}
+.site-header .account-nav .icon-button:hover{background:#8CDFAD18;border-color:var(--header-accent)}
+.site-header .header-publish{color:#102318;background:var(--header-control);border-color:transparent}
+.site-header .header-publish:hover{background:#C4FFDB;color:#102318}
+.site-header .header-publish:active{background:#8CDFAD}
+.site-header .notification-dot{background:var(--header-accent);box-shadow:0 0 0 3px var(--header-bg)}
+.site-header :focus-visible{outline:2px solid var(--header-accent);outline-offset:4px}
+.brand-mark{position:relative;display:block;flex:0 0 40px;width:40px;height:40px;perspective:240px}
+.brand-mark-body{position:absolute;inset:0;transform-style:preserve-3d;animation:brand-turn 16s linear infinite}
+.site-header .brand-mark img{position:absolute;inset:0;width:100%;height:100%;max-width:none;pointer-events:none}
+.brand-mark-depth{transform:translateZ(var(--depth));filter:brightness(.85) saturate(.8)}
+.brand-mark-front,.brand-mark-back{backface-visibility:hidden;filter:brightness(1.8) saturate(.8)}
+.brand-mark-front{transform:translateZ(4px)}
+.brand-mark-back{transform:rotateY(180deg) translateZ(4px)}
+.site-header .brand:hover .brand-mark-body,.site-header .brand:focus-visible .brand-mark-body,
+body:has(dialog[open]) .brand-mark-body,body:has(dialog[open]) .site-header::before,body:has(dialog[open]) .site-header::after{animation-play-state:paused}
+@keyframes header-drift{from{transform:translate3d(-6%,0,0) rotate(-3deg)}to{transform:translate3d(6%,6%,0) rotate(3deg)}}
+@keyframes header-trace{to{transform:translateX(320%)}}
+@keyframes brand-turn{from{transform:rotateX(-14deg) rotateY(0deg) rotateZ(-4deg)}to{transform:rotateX(-14deg) rotateY(360deg) rotateZ(-4deg)}}
+@media(max-width:850px){.brand-mark{width:32px;height:32px;flex-basis:32px}}
+@media(max-width:600px){.brand-mark{width:31px;height:31px;flex-basis:31px}.site-header::before{inset:-70% -50%}.site-header :focus-visible{outline-offset:2px}}
+@media(max-width:370px){.brand-mark{width:28px;height:28px;flex-basis:28px}}
+.motion-paused .brand-mark-body{transform:none}
+@media(prefers-reduced-motion:reduce){.brand-mark-body{animation:none;transform:none}.site-header::before,.site-header::after{animation:none}}
