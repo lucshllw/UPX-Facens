@@ -25,17 +25,21 @@ jobs:
       TEST_DB_USER: postgres
       TEST_DB_PASSWORD: ci-test-only
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-node@v7.1.0
         with:
           node-version: '22'
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@v6.1.0
         with:
           distribution: temurin
           java-version: '17'
           cache: maven
       - name: Verificar interface e sincronizar distribuicao
         run: npm run check
+      - name: Validar configuracao do Compose sem exibir credenciais
+        run: |
+          node tools/setup-env.js
+          docker compose config --quiet
       - name: Testar Java, migracoes e fluxos no PostgreSQL real
         run: mvn -B -Ppostgres-it verify
       - name: Construir imagem de deploy
@@ -58,7 +62,7 @@ jobs:
           exit 1
       - name: Relatorios de teste
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7.0.2
         with:
           name: testes-java-postgresql
           path: |

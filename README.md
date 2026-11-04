@@ -17,9 +17,9 @@ node tools/setup-env.js
 docker compose up --build -d
 ```
 
-Abra **http://localhost:8080**. O servidor Java entrega a interface e a API, e as migracoes criam o banco automaticamente. PostgreSQL e fotos ficam em volumes persistentes. Nenhum usuario ou anuncio e pre-carregado.
+Abra **http://localhost:8080**. O servidor Java entrega a interface e a API, e as migrações criam o banco automaticamente. PostgreSQL e fotos ficam em volumes persistentes. Nenhum usuário ou anúncio e pre-carregado.
 
-Precisa de Docker com Compose v2 e Node.js 20+ para gerar `.env`. O build inclui Java 17 e Maven. Nao e necessario receber as ferramentas privadas do computador do autor.
+Precisa de Docker com Compose v2 e Node.js 22+ para gerar `.env`. O build inclui Java 17 e Maven. Não e necessário receber as ferramentas privadas do computador do autor.
 
 **Para o membro do grupo:** [guia de deploy e trabalho em dupla](docs/DEPLOY.md). [Estrutura SQL](docs/BANCO_SQL.md).
 
@@ -30,17 +30,17 @@ npm run check
 mvn -B verify
 ```
 
-Para testar migracoes e fluxos em PostgreSQL real, crie um banco isolado chamado `reuseplus_test`, configure `TEST_DB_URL`, `TEST_DB_USER` e `TEST_DB_PASSWORD`, e rode:
+Para testar migrações e fluxos em PostgreSQL real, crie um banco isolado chamado `reuseplus_test`, configure `TEST_DB_URL`, `TEST_DB_USER` e `TEST_DB_PASSWORD`, e rode:
 
 ```sh
 mvn -B -Ppostgres-it verify
 ```
 
-A verificacao automatica no GitHub tambem constroi e inicia a imagem Docker com PostgreSQL. `GET /api/health` responde UP apenas quando o banco aceita conexoes.
+A verificação automatica no GitHub tambem constroi e inicia a imagem Docker com PostgreSQL. `GET /api/health` responde UP apenas quando o banco aceita conexões.
 
 ## Previa da interface sem servidor Java
 
-`npm start` abre a versao independente em http://localhost:4173. Ela guarda dados somente no navegador e serve para experimentar a interface; para compartilhar contas/anuncios/mensagens entre pessoas use a versao Java/PostgreSQL acima.
+`npm start` abre a versão independente em http://localhost:4173. Ela guarda dados somente no navegador e serve para experimentar a interface; para compartilhar contas/anúncios/mensagens entre pessoas use a versão Java/PostgreSQL acima.
 
 ## Desenvolvimento H2 opcional
 
@@ -52,7 +52,7 @@ mvn -Pdev package
 java -jar target/reuse-plus-0.0.1-SNAPSHOT.jar --spring.profiles.active=dev --server.address=127.0.0.1
 ```
 
-Esse perfil conserva o H2 local em `.reuse-data/`; nao e o perfil de deploy e nao altera PostgreSQL existente. O script `tools/start-backend.ps1` e uma alternativa exclusiva da copia original que contem as ferramentas portateis nao versionadas.
+Esse perfil conserva o H2 local em `.reuse-data/`; não e o perfil de deploy e não altera PostgreSQL existente. O script `tools/start-backend.ps1` e uma alternativa exclusiva da copia original que contem as ferramentas portateis não versionadas.
 
 ## Funcionalidades
 
@@ -81,11 +81,15 @@ O deploy exige credenciais próprias; o script gera os valores sem imprimi-los. 
 
 Three.js e Lora mantêm suas licenças em `assets/vendor/THREE-LICENSE.txt` e `assets/LORA-LICENSE.txt`. As fontes e a procedência dos recursos visuais estão documentadas em `assets/SCENE-RESOURCES.md`.
 
-## Verificacao da entrega SQL (03/11/2026)
+## Verificação da entrega SQL (03/11/2026)
 
-- 12 testes Java aprovados: 8 verificacoes no ambiente H2 e 4 no PostgreSQL 16 real, incluindo concorrencia de reservas e migracoes Flyway.
+- 12 testes Java aprovados: 8 verificações no ambiente H2 e 4 no PostgreSQL 16 real, incluindo concorrencia de reservas e migrações Flyway.
 - 5 testes frontend aprovados, alem de sintaxe, contraste, sincronizacao e limites de tamanho.
-- 34 verificacoes HTTP contra o JAR conectado ao PostgreSQL: cadastro/login, fotos, CRUD, favoritos, reservas e privacidade de mensagens.
-- Sessao expirada nao bloqueia mais o catalogo publico; o navegador permite continuar explorando e entrar novamente.
+- 34 verificações HTTP contra o JAR conectado ao PostgreSQL: cadastro/login, fotos, CRUD, favoritos, reservas e privacidade de mensagens.
+- 14 verificações adicionais após reiniciar o banco e o JAR confirmaram persistência; foto comparada por SHA-256.
+- Banco indisponível retorna HTTP 503; upload acima de 8 MB retorna HTTP 413.
+- Sessão expirada não bloqueia mais o catálogo público; o navegador permite continuar explorando e entrar novamente.
 
-[Ver a verificacao automatica no GitHub](https://github.com/lucshllw/UPX-Facens/actions/workflows/ci.yml). O resultado de cada execucao esta no proprio Actions; envio do codigo nao e confirmacao de hospedagem externa. Nenhum deploy em provedor foi ativado nesta entrega.
+[Ver a verificação automatica no GitHub](https://github.com/lucshllw/UPX-Facens/actions/workflows/ci.yml). O resultado de cada execucao esta no proprio Actions; envio do código não e confirmacao de hospedagem externa. Nenhum deploy em provedor foi ativado nesta entrega.
+
+O colaborador **leoesmeraldino** aceitou o convite e possui permissão de escrita no repositório.
