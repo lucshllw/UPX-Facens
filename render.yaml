@@ -1,0 +1,44 @@
+# Initial academic deployment: free PostgreSQL expires after 30 days.
+# Review limits at https://render.com/docs/free before creating resources.
+services:
+  - type: web
+    name: reuse-upx-api
+    runtime: docker
+    plan: free
+    region: virginia
+    repo: https://github.com/lucshllw/UPX-Facens
+    branch: main
+    healthCheckPath: /api/health
+    envVars:
+      - key: DB_HOST
+        fromDatabase:
+          name: reuse-upx-db
+          property: host
+      - key: DB_NAME
+        value: reuseplus
+      - key: DB_USER
+        fromDatabase:
+          name: reuse-upx-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: reuse-upx-db
+          property: password
+      - key: JWT_SECRET
+        generateValue: true
+      - key: UPLOAD_STORAGE
+        value: database
+      - key: DB_POOL_SIZE
+        value: 5
+      - key: CORS_ALLOWED_ORIGINS
+        value: https://reuse-upx-facens.netlify.app
+      - key: JAVA_TOOL_OPTIONS
+        value: -XX:MaxRAMPercentage=60.0 -XX:+UseSerialGC -Xss512k
+
+databases:
+  - name: reuse-upx-db
+    plan: free
+    region: virginia
+    databaseName: reuseplus
+    user: reuseplus
+    ipAllowList: []

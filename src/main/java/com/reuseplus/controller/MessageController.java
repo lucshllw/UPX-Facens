@@ -28,6 +28,12 @@ public class MessageController {
         return messageService.listForItem(itemId);
     }
 
+    @PostMapping("/items/{itemId}/read")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void markRead(@PathVariable Long itemId, @org.springframework.web.bind.annotation.RequestParam Long peerId) {
+        messageService.markRead(itemId, peerId);
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public MessageResponse send(@Valid @RequestBody MessageRequest request) {

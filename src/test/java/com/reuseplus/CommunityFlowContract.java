@@ -69,6 +69,24 @@ abstract class CommunityFlowContract {
         mvc.perform(get("/api/me/favorites").header("Authorization",token(guest))).andExpect(jsonPath("$.length()").value(0));
         mvc.perform(get("/api/me/messages").header("Authorization",token(guest))).andExpect(jsonPath("$.length()").value(0));
     }
+    @Test void chatReadReceiptsAreScopedToTheRecipientAndSelectedPerson() throws Exception {
+        JsonNode owner = register("Dono Chat"), alice = register("Alice Chat"), bob = register("Bob Chat");
+        long id = mapper.readTree(mvc.perform(post("/api/items").header("Authorization", token(owner)).contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(item("Objeto do chat")))).andExpect(status().isCreated()).andReturn().getResponse().getContentAsString()).get("id").asLong();
+        long aliceId = alice.get("user").get("id").asLong(), bobId = bob.get("user").get("id").asLong(), ownerId = owner.get("user").get("id").asLong();
+        for (JsonNode sender : java.util.List.of(alice, bob)) {
+            mvc.perform(post("/api/messages").header("Authorization", token(sender)).contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(Map.of("itemId", id, "content", "Ola, tenho interesse")))).andExpect(status().isCreated()).andExpect(jsonPath("$.readAt").isEmpty());
+        }
+        mvc.perform(post("/api/messages/items/"+id+"/read").param("peerId", ""+aliceId)).andExpect(status().isUnauthorized());
+        // Bob cannot acknowledge the owner's conversation with Alice.
+        mvc.perform(post("/api/messages/items/"+id+"/read").param("peerId", ""+aliceId).header("Authorization", token(bob))).andExpect(status().isForbidden());
+        mvc.perform(post("/api/messages/items/"+id+"/read").param("peerId", ""+aliceId).header("Authorization", token(owner))).andExpect(status().isNoContent());
+        mvc.perform(get("/api/messages/items/"+id).header("Authorization", token(alice))).andExpect(jsonPath("$.length()").value(1)).andExpect(jsonPath("$[0].readAt").isNotEmpty());
+        mvc.perform(get("/api/messages/items/"+id).header("Authorization", token(bob))).andExpect(jsonPath("$.length()").value(1)).andExpect(jsonPath("$[0].readAt").isEmpty());
+        mvc.perform(post("/api/messages").header("Authorization", token(owner)).contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(Map.of("itemId", id, "receiverId", aliceId, "content", "Sim, podemos combinar.")))).andExpect(status().isCreated());
+        mvc.perform(post("/api/messages/items/"+id+"/read").param("peerId", ""+ownerId).header("Authorization", token(alice))).andExpect(status().isNoContent());
+        mvc.perform(get("/api/me/messages").header("Authorization", token(alice))).andExpect(jsonPath("$.length()").value(2)).andExpect(jsonPath("$[0].readAt").isNotEmpty());
+        mvc.perform(post("/api/messages").header("Authorization", token(bob)).contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(Map.of("itemId", id, "content", "   ")))).andExpect(status().isBadRequest());
+    }
     @Test void rejectsInvalidFormsAndUploads() throws Exception {
         JsonNode owner = register("Validacao");
         mvc.perform(post("/api/auth/login").contentType(MediaType.APPLICATION_JSON).content("{\"email\":\"nobody@example.test\",\"password\":\"incorrect\"}")).andExpect(status().isUnauthorized());

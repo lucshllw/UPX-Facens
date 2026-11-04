@@ -94,3 +94,10 @@ Three.js e Lora mantêm suas licenças em `assets/vendor/THREE-LICENSE.txt` e `a
 [Ver a verificação automatica no GitHub](https://github.com/lucshllw/UPX-Facens/actions/workflows/ci.yml). O resultado de cada execucao esta no proprio Actions; envio do código não e confirmacao de hospedagem externa. Nenhum deploy em provedor foi ativado nesta entrega.
 
 O colaborador **leoesmeraldino** aceitou o convite e possui permissão de escrita no repositório.
+
+
+## Chat e publicação no Netlify
+
+O chat agora separa cada interessado por anúncio, atualiza automaticamente e mostra mensagens não lidas e confirmação de leitura. O servidor mantém a autorização e persistência SQL.
+
+Frontend Netlify: https://reuse-upx-facens.netlify.app. A ativação integral depende da API Java estar online e de `API_BASE_URL` configurada no Netlify. Consulte [o guia](docs/DEPLOY.md#netlify--servidor-java-no-render-03112026). `render.yaml` prepara Java/PostgreSQL gratuitos para demonstração, com fotos em SQL; banco Free expira após 30 dias.

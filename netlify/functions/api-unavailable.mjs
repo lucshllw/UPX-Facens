@@ -1,0 +1,1 @@
+export default async () => Response.json({status:503,message:"A comunidade está em preparação. O servidor de contas, anúncios e chat ainda não foi conectado."},{status:503,headers:{"Cache-Control":"no-store"}});

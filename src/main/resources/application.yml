@@ -2,7 +2,7 @@ spring:
   application:
     name: reuse-plus
   datasource:
-    url: ${DB_URL:jdbc:postgresql://localhost:5432/reuseplus}
+    url: ${DB_URL:jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:reuseplus}}
     username: ${DB_USER:reuseplus}
     password: ${DB_PASSWORD}
     hikari:
@@ -32,6 +32,7 @@ server:
     mime-types: text/html,text/css,text/javascript,application/javascript,application/json,image/svg+xml
 
 app:
+  upload-storage: ${UPLOAD_STORAGE:disk}
   upload-directory: ${UPLOAD_DIRECTORY:./.reuse-data/uploads}
   cors:
     allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:8080,http://localhost:5173}

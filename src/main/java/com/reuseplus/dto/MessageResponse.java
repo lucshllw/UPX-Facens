@@ -9,7 +9,8 @@ public record MessageResponse(
         UserSummary sender,
         UserSummary receiver,
         String content,
-        Instant createdAt
+        Instant createdAt,
+        Instant readAt
 ) {
     public static MessageResponse from(Message message) {
         return new MessageResponse(
@@ -18,7 +19,8 @@ public record MessageResponse(
                 UserSummary.from(message.getSender()),
                 UserSummary.from(message.getReceiver()),
                 message.getContent(),
-                message.getCreatedAt()
+                message.getCreatedAt(),
+                message.getReadAt()
         );
     }
 }

@@ -35,7 +35,7 @@ jobs:
           java-version: '17'
           cache: maven
       - name: Verificar interface e sincronizar distribuicao
-        run: npm run check
+        run: npm run check && node tools/build-netlify.js
       - name: Validar configuracao do Compose sem exibir credenciais
         run: |
           node tools/setup-env.js

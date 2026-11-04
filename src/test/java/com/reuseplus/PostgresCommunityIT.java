@@ -24,12 +24,23 @@ class PostgresCommunityIT extends CommunityFlowContract {
         properties.add("spring.datasource.username", () -> System.getenv().getOrDefault("TEST_DB_USER", "postgres"));
         properties.add("spring.datasource.password", () -> System.getenv().getOrDefault("TEST_DB_PASSWORD", "postgres"));
         properties.add("app.jwt.secret", () -> "integration-only-jwt-secret-not-for-production-2026");
+        properties.add("app.upload-storage", () -> "database");
         properties.add("app.upload-directory", () -> "./validation/tmp/postgres-uploads");
     }
     private JsonNode newAccount() throws Exception {
         return mapper.readTree(mvc.perform(post("/api/auth/register").contentType(MediaType.APPLICATION_JSON)
             .content(mapper.writeValueAsString(Map.of("name", "SQL Test", "email", UUID.randomUUID()+"@example.test", "password", "SqlTest123!", "neighborhood", "Sorocaba"))))
             .andExpect(status().isCreated()).andReturn().getResponse().getContentAsString());
+    }
+    @Test void photosArePersistedInPostgresWithoutAnEphemeralDisk() throws Exception {
+        JsonNode auth = newAccount();
+        byte[] png = java.util.Base64.getDecoder().decode("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+/l9sAAAAASUVORK5CYII=");
+        var photo = new org.springframework.mock.web.MockMultipartFile("file", "photo.png", "image/png", png);
+        JsonNode result = mapper.readTree(mvc.perform(multipart("/api/uploads").file(photo).header("Authorization", "Bearer "+auth.get("token").asText())).andExpect(status().isCreated()).andReturn().getResponse().getContentAsString());
+        String url = result.get("url").asText(), name = url.substring("/uploads/".length());
+        assertArrayEquals(png, jdbc.queryForObject("SELECT content FROM uploaded_photos WHERE name = ?", byte[].class, name));
+        mvc.perform(get(url)).andExpect(status().isOk()).andExpect(content().bytes(png));
+        mvc.perform(get("/uploads/not-a-valid-photo.png")).andExpect(status().isNotFound());
     }
     @Test void usesRealPostgresAndVersionedMigrations() throws Exception {
         try (var connection = jdbc.getDataSource().getConnection()) {

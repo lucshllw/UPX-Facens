@@ -55,6 +55,17 @@ public class MessageService {
         return MessageResponse.from(messageRepository.save(message));
     }
 
+    @Transactional
+    public void markRead(Long itemId, Long peerId) {
+        AppUser user = currentUserService.get();
+        Item item = itemService.findById(itemId);
+        if (user.getId().equals(peerId) || (!item.getOwner().getId().equals(user.getId())
+                && !item.getOwner().getId().equals(peerId))) {
+            throw new ApiException(HttpStatus.FORBIDDEN, "A conversa deve ser entre o anunciante e o interessado.");
+        }
+        messageRepository.markRead(itemId, user.getId(), peerId, java.time.Instant.now());
+    }
+
     private AppUser resolveReceiver(AppUser sender, Item item, Long requestedReceiverId) {
         boolean senderIsOwner = item.getOwner().getId().equals(sender.getId());
         if (!senderIsOwner) {

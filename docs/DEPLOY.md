@@ -91,3 +91,20 @@ Este guia prepara o deploy. Criar o repositório, enviar o código ou ter CI ver
 
 - [Ordem de inicializacao e healthcheck no Compose](https://docs.docker.com/compose/how-tos/startup-order/).
 - [PostgreSQL para Windows e binários portateis](https://www.postgresql.org/download/windows/). Na validação local sem Docker, foram usados binários PostgreSQL 16.15 distribuidos pelo projeto [Zonky](https://github.com/zonkyio/embedded-postgres), apenas como ferramenta de teste, fora do repositório e da imagem de produção.
+
+
+## Netlify + servidor Java no Render (03/11/2026)
+
+Site criado no Netlify: https://reuse-upx-facens.netlify.app. A publicação do frontend e a ativação do backend são etapas distintas. `netlify.toml` publica somente `dist/`, gerado por `node tools/build-netlify.js`; arquivos privados, banco, fontes e evidências ficam fora dessa distribuição.
+
+1. Crie o backend e PostgreSQL pelo `render.yaml`: [configurar Blueprint no Render](https://dashboard.render.com/select-repo?type=blueprint&repo=https%3A%2F%2Fgithub.com%2Flucshllw%2FUPX-Facens).
+2. O blueprint fornece DB_HOST/DB_NAME/DB_USER/DB_PASSWORD e JWT_SECRET próprio. UPLOAD_STORAGE=database guarda fotos no PostgreSQL sem depender do filesystem efêmero; o padrão local continua disk. Fotos antigas em disco não são importadas nem apagadas.
+3. Após `/api/health` retornar UP no endereço HTTPS atribuído pelo Render, configure API_BASE_URL no Netlify com essa origem, por exemplo `https://seu-servidor.onrender.com` (sem `/api`). Nunca use localhost ou inclua credenciais.
+4. Refazer o build/deploy gera proxies `/api/*` e `/uploads/*` para o Java. Login, autorização e leitura das conversas continuam verificados pelo servidor.
+5. Sem API_BASE_URL, a interface exibe indisponibilidade explícita; não cria uma comunidade simulada no armazenamento do navegador.
+
+Os planos Free do Render têm limites: backend suspende por inatividade e PostgreSQL expira em 30 dias. Não são retenção permanente. Para continuar após o prazo, o grupo precisa migrar/exportar ou escolher um plano pago; nenhum plano pago foi autorizado nesta etapa. O SQL de fotos serve ao porte acadêmico; armazenamento de objetos dedicado é preferível quando o volume crescer.
+
+Chat: conversas são separadas por anúncio e interessado, com horário, leitura individual e badge de não lidas. Atualização automática por HTTP a cada 5 s na conversa/caixa aberta e 20 s na página visível; pausa em aba oculta. Não usa WebSocket nem notificações push. Os textos digitados permanecem no campo quando envio ou conexão falha.
+
+Fontes: [Netlify proxies](https://docs.netlify.com/manage/routing/redirects/rewrites-proxies/), [limites Free do Render](https://render.com/docs/free).

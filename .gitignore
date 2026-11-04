@@ -28,3 +28,9 @@ Thumbs.db
 # Browser/CI local evidence
 output/
 .playwright-cli/
+
+# Local Netlify folder
+.netlify
+
+# Generated Netlify distribution
+dist/
