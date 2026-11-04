@@ -83,7 +83,7 @@ Three.js e Lora mantêm suas licenças em `assets/vendor/THREE-LICENSE.txt` e `a
 
 ## Verificação da entrega SQL (03/11/2026)
 
-- 13 testes Java aprovados: 8 verificações no ambiente H2 e 5 no PostgreSQL 16 real, incluindo concorrencia de reservas e migrações Flyway.
+- 17 testes Java aprovados: 10 verificações no ambiente H2 e 7 no PostgreSQL 16 real, incluindo concorrencia de reservas e migrações Flyway.
 - 5 testes frontend aprovados, alem de sintaxe, contraste, sincronizacao e limites de tamanho.
 - 34 verificações HTTP contra o JAR conectado ao PostgreSQL: cadastro/login, fotos, CRUD, favoritos, reservas e privacidade de mensagens.
 - 14 verificações adicionais após reiniciar o banco e o JAR confirmaram persistência; foto comparada por SHA-256.
@@ -91,7 +91,7 @@ Three.js e Lora mantêm suas licenças em `assets/vendor/THREE-LICENSE.txt` e `a
 - Edição simultânea com reserva preserva o estado e a pessoa que reservou, com teste de regressão em PostgreSQL.
 - Sessão expirada não bloqueia mais o catálogo público; o navegador permite continuar explorando e entrar novamente.
 
-[Ver a verificação automatica no GitHub](https://github.com/lucshllw/UPX-Facens/actions/workflows/ci.yml). O resultado de cada execucao esta no proprio Actions; envio do código não e confirmacao de hospedagem externa. Nenhum deploy em provedor foi ativado nesta entrega.
+[Ver a verificação automatica no GitHub](https://github.com/lucshllw/UPX-Facens/actions/workflows/ci.yml). O resultado de cada execucao esta no proprio Actions; envio do código não e confirmacao de hospedagem externa. Frontend Netlify e Java/PostgreSQL no Render foram ativados em 03/11/2026, com fluxos públicos verificados.
 
 O colaborador **leoesmeraldino** aceitou o convite e possui permissão de escrita no repositório.
 
@@ -100,4 +100,11 @@ O colaborador **leoesmeraldino** aceitou o convite e possui permissão de escrit
 
 O chat agora separa cada interessado por anúncio, atualiza automaticamente e mostra mensagens não lidas e confirmação de leitura. O servidor mantém a autorização e persistência SQL.
 
-Frontend Netlify: https://reuse-upx-facens.netlify.app. A ativação integral depende da API Java estar online e de `API_BASE_URL` configurada no Netlify. Consulte [o guia](docs/DEPLOY.md#netlify--servidor-java-no-render-03112026). `render.yaml` prepara Java/PostgreSQL gratuitos para demonstração, com fotos em SQL; banco Free expira após 30 dias.
+Site público: https://reuse-upx-facens.netlify.app, conectado à API https://reuse-upx-api.onrender.com e ao PostgreSQL do Render. `API_BASE_URL` já foi configurada no Netlify. Consulte [o guia](docs/DEPLOY.md#netlify--servidor-java-no-render-03112026). `render.yaml` prepara Java/PostgreSQL gratuitos para demonstração, com fotos em SQL; banco Free expira após 30 dias.
+
+
+### Verificação do ambiente publicado
+
+Em 03/11/2026: 23 verificações HTTP passaram no domínio Netlify, cobrindo cadastro/login, fotos, anúncio, favoritos, reserva, chat, leitura individual e privacidade. Edge confirmou login e envio no site público, teclado, celular 390×844 e zero erros de console. [CI da implementação aprovado](https://github.com/lucshllw/UPX-Facens/actions/runs/41753279377).
+
+PostgreSQL gratuito expira em **03/12/2026, às 22h29 (Brasília)**, conforme retorno do provedor. Exportar/migrar ou escolher plano pago antes do vencimento. O servidor Free suspende por inatividade e pode demorar na primeira abertura. Nenhum plano pago foi contratado; H2 local não foi importado.

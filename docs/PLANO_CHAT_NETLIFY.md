@@ -6,9 +6,9 @@ Decisão: evoluir mensagens existentes, sem migração de frontend e sem substit
 
 - [x] Regressão de leitura e isolamento, inicialmente falhando, depois implementada na API existente.
 - [x] Separar módulo de chat do catálogo e preservar interface aprovada.
-- [ ] Verificar duas contas no navegador, celular, reconexão e atualização automática.
-- [ ] Validar build seguro do Netlify e publicar.
-- [ ] Provisionar Java/PostgreSQL mediante conexão confirmada do provedor; nenhum plano pago automaticamente.
-- [ ] Atualizar relatório e continuidade com evidências e limitações.
+- [x] Verificar duas contas no navegador, celular, reconexão e atualização automática.
+- [x] Validar build seguro do Netlify e publicar.
+- [x] Provisionar Java/PostgreSQL mediante conexão confirmada do provedor; nenhum plano pago automaticamente.
+- [x] Atualizar relatório e continuidade com evidências e limitações.
 
-Acesso Netlify confirmado; novo site reuse-upx-facens criado. Integração Render oferecida; conexão ainda necessária. Render gratuito tem PostgreSQL com expiração de 30 dias e serviço com filesystem efêmero; não prometer retenção permanente nesse plano.
+Acesso Netlify confirmado; novo site reuse-upx-facens criado. Acesso Render validado por credencial privada fornecida por Lucas; PostgreSQL e Java gratuitos criados e conectados ao Netlify. Render gratuito tem PostgreSQL com expiração de 30 dias e serviço com filesystem efêmero; não prometer retenção permanente nesse plano.

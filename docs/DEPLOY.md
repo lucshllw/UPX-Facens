@@ -108,3 +108,14 @@ Os planos Free do Render têm limites: backend suspende por inatividade e Postgr
 Chat: conversas são separadas por anúncio e interessado, com horário, leitura individual e badge de não lidas. Atualização automática por HTTP a cada 5 s na conversa/caixa aberta e 20 s na página visível; pausa em aba oculta. Não usa WebSocket nem notificações push. Os textos digitados permanecem no campo quando envio ou conexão falha.
 
 Fontes: [Netlify proxies](https://docs.netlify.com/manage/routing/redirects/rewrites-proxies/), [limites Free do Render](https://render.com/docs/free).
+
+
+### Resultado publicado em 03/11/2026
+
+- Site: https://reuse-upx-facens.netlify.app.
+- API: https://reuse-upx-api.onrender.com; `/api/health` retornou UP com PostgreSQL real.
+- API_BASE_URL e proxies de API/fotos configurados. Acesso público sem login Netlify; cadastro da comunidade continua necessário para publicar/conversar.
+- 23 verificações HTTP aprovadas e fluxo no navegador público com login, chat, celular, teclado e console sem erros.
+- Banco gratuito vence em 03/12/2026 às 22h29 (Brasília). Sem renovação agendada ou plano pago contratado.
+
+PDF com 7 capturas reais e MP4 de 1min30s são entregues separadamente ao grupo, fora da distribuição pública. Capturas 1-4 e 6 e vídeo: ambiente local SQL. Captura 5: site publicado. Captura 7: CI real aprovado. Contas e anúncios usados nas evidências são fictícios.

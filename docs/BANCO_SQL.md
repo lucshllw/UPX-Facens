@@ -26,3 +26,10 @@ erDiagram
 Estados do item: AVAILABLE -> RESERVED -> FINISHED, com cancelamento RESERVED -> AVAILABLE. Somente o proprietário conclui/remove; proprietário e solicitante podem cancelar uma reserva. Chaves estrangeiras e exclusao transacional mantem favoritos, reservas e mensagens coerentes ao remover um anúncio.
 
 O perfil dev e um banco H2 independente. Bancos e fotos antigos sao preservados em disco; mudar o ambiente para PostgreSQL não importa dados H2 automaticamente. O deploy novo inicia uma comunidade vazia. O teste SQL usa somente `reuseplus_test`, separado da comunidade.
+
+
+## Fotos SQL e leitura do chat (V4)
+
+`uploaded_photos(name VARCHAR(64) PRIMARY KEY, content BYTEA NOT NULL)` armazena fotos com UPLOAD_STORAGE=database. Aplicação e CHECK SQL limitam cada foto a 8 MiB. O padrão permanece disk para instalações com volume. Fotos anteriores em disco continuam disponíveis, sem importação automática.
+
+`messages.read_at`, já existente, é atualizado apenas pelo destinatário e interlocutor selecionado. POST `/api/messages/items/{itemId}/read?peerId={userId}` valida a relação anunciante/interessado; nunca marca a leitura por outra pessoa. Os GETs mantêm isolamento. O frontend agrupa por item e interlocutor.
