@@ -64,4 +64,43 @@ class PostgresCommunityIT extends CommunityFlowContract {
             mvc.perform(delete("/api/items/"+id).header("Authorization","Bearer "+owner.get("token").asText())).andExpect(status().isNoContent());
         }
     }
+    @Test void editingCannotOverwriteAReservationCommittedWhileItWaits() throws Exception {
+        JsonNode owner = newAccount(), requester = newAccount();
+        long category = jdbc.queryForObject("SELECT MIN(id) FROM categories", Long.class);
+        var payload = Map.of("categoryId",category,"title","Edicao concorrente SQL","description","Objeto de teste para preservar reserva durante edicao.","type","DONATION","imageUrls",List.of("https://example.test/photo.jpg"));
+        String ownerToken = "Bearer "+owner.get("token").asText();
+        long id = mapper.readTree(mvc.perform(post("/api/items").header("Authorization",ownerToken).contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(payload)))
+            .andExpect(status().isCreated()).andReturn().getResponse().getContentAsString()).get("id").asLong();
+        var pool = Executors.newSingleThreadExecutor();
+        try (var reservation = jdbc.getDataSource().getConnection()) {
+            reservation.setAutoCommit(false);
+            try (var update = reservation.prepareStatement("UPDATE items SET status='RESERVED', reserved_by_id=? WHERE id=?")) {
+                update.setLong(1,requester.get("user").get("id").asLong()); update.setLong(2,id); update.executeUpdate();
+            }
+            try (var history = reservation.prepareStatement("INSERT INTO reservations(item_id,requester_id,owner_id,status) VALUES (?,?,?,'CONFIRMED')")) {
+                history.setLong(1,id);history.setLong(2,requester.get("user").get("id").asLong());history.setLong(3,owner.get("user").get("id").asLong());history.executeUpdate();
+            }
+            var editedPayload = new java.util.HashMap<String,Object>(payload);
+            editedPayload.put("title","Edicao concorrente SQL atualizada");
+            var edited = pool.submit(() -> mvc.perform(put("/api/items/"+id).header("Authorization",ownerToken).contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(editedPayload)))
+                .andExpect(status().isOk()).andReturn().getResponse().getContentAsString());
+            boolean blocked = false;
+            try {
+                long deadline = System.nanoTime()+TimeUnit.SECONDS.toNanos(10);
+                while (System.nanoTime()<deadline) {
+                    if (jdbc.queryForObject("SELECT COUNT(*) FROM pg_stat_activity WHERE datname=current_database() AND pid<>pg_backend_pid() AND wait_event_type='Lock'",Integer.class)>0) { blocked=true;break; }
+                    Thread.sleep(25);
+                }
+                assertTrue(blocked,"A edicao precisa aguardar a transacao que esta reservando.");
+            } finally { reservation.commit(); }
+            edited.get(15,TimeUnit.SECONDS);
+            mvc.perform(get("/api/items/"+id)).andExpect(status().isOk())
+                .andExpect(jsonPath("$.status").value("RESERVED"))
+                .andExpect(jsonPath("$.reservedById").value(requester.get("user").get("id").asLong()));
+        } finally {
+            pool.shutdownNow();
+            mvc.perform(delete("/api/items/"+id).header("Authorization",ownerToken)).andExpect(status().isNoContent());
+        }
+    }
+
 }

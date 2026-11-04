@@ -64,7 +64,9 @@ public class ItemService {
     @Transactional
     public ItemResponse update(Long id, ItemRequest request) {
         validatePhotos(request);
-        Item item = findById(id);
+        // Serialize edits with reservations/completion so stale fields cannot undo them.
+        Item item = itemRepository.findLockedById(id)
+                .orElseThrow(() -> new ApiException(HttpStatus.NOT_FOUND, "Item nao encontrado."));
         assertOwner(item);
         Category category = categoryService.findById(request.categoryId());
         // Reservation and completion have their own transaction and permission checks.

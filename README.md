@@ -83,11 +83,12 @@ Three.js e Lora mantêm suas licenças em `assets/vendor/THREE-LICENSE.txt` e `a
 
 ## Verificação da entrega SQL (03/11/2026)
 
-- 12 testes Java aprovados: 8 verificações no ambiente H2 e 4 no PostgreSQL 16 real, incluindo concorrencia de reservas e migrações Flyway.
+- 13 testes Java aprovados: 8 verificações no ambiente H2 e 5 no PostgreSQL 16 real, incluindo concorrencia de reservas e migrações Flyway.
 - 5 testes frontend aprovados, alem de sintaxe, contraste, sincronizacao e limites de tamanho.
 - 34 verificações HTTP contra o JAR conectado ao PostgreSQL: cadastro/login, fotos, CRUD, favoritos, reservas e privacidade de mensagens.
 - 14 verificações adicionais após reiniciar o banco e o JAR confirmaram persistência; foto comparada por SHA-256.
 - Banco indisponível retorna HTTP 503; upload acima de 8 MB retorna HTTP 413.
+- Edição simultânea com reserva preserva o estado e a pessoa que reservou, com teste de regressão em PostgreSQL.
 - Sessão expirada não bloqueia mais o catálogo público; o navegador permite continuar explorando e entrar novamente.
 
 [Ver a verificação automatica no GitHub](https://github.com/lucshllw/UPX-Facens/actions/workflows/ci.yml). O resultado de cada execucao esta no proprio Actions; envio do código não e confirmacao de hospedagem externa. Nenhum deploy em provedor foi ativado nesta entrega.

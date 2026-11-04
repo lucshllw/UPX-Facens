@@ -19,7 +19,7 @@ erDiagram
 - `categories`: cinco categorias iniciais; não sao anúncios ficticios.
 - `items`: proprietário, categoria, descrição, modalidade, estado, galeria, localização e identificador de quem reservou.
 - `favorites`: par usuário/item único, persistente e privado por conta.
-- `reservations`: histórico; índice parcial garante no máximo uma reserva ativa por item. A transacao trava o item antes de reservar/cancelar/concluir.
+- `reservations`: histórico; índice parcial garante no máximo uma reserva ativa por item. A transação trava o item antes de editar/reservar/cancelar/concluir.
 - `messages`: remetente, destinatario, item e conteudo; endpoints limitam cada conversa aos participantes.
 - `impact_metrics`: tabela legada de indicadores, preservada. A interface usa contagens reais de anúncios e estados; não estima impacto ambiental nem preenche essa tabela com numeros ficticios.
 

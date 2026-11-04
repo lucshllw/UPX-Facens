@@ -12,4 +12,6 @@ Pedido: concluir os fluxos existentes com SQL real e entregar o projeto no GitHu
 ## Pontos de revisao
 Segredos ausentes no Git; fotos e banco sobrevivem a reinicio; schema criado por Flyway; disputa de reserva so tem um vencedor; sessao expirada não bloqueia catalogo; Docker não depende das ferramentas privadas do computador.
 
-Concluído em 03/11/2026: PostgreSQL real, persistência após reinício, 12 testes Java, 5 frontend, HTTP e UI. CI inicial confirmou build/inicialização Docker. Configuração final inclui ações oficiais atuais e validação de Compose; ver a execução correspondente ao HEAD no GitHub para o resultado. Nenhuma hospedagem externa foi ativada.
+Concluído em 03/11/2026: PostgreSQL real, persistência após reinício, 13 testes Java, 5 frontend, HTTP e UI. CI inicial confirmou build/inicialização Docker. Configuração final inclui ações oficiais atuais e validação de Compose; ver a execução correspondente ao HEAD no GitHub para o resultado. Nenhuma hospedagem externa foi ativada.
+
+Revisão adicional: regressão reproduzida e corrigida para impedir que uma edição simultânea sobrescreva a reserva. Todos os 13 testes Java passaram após a correção.
