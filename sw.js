@@ -1,4 +1,4 @@
-const CACHE_NAME='reuse-plus-gallery-v7-dark-menu';
+const CACHE_NAME='reuse-plus-gallery-v8-sql';
 const CORE=['./','./index.html','./styles.css','./script.js','./manifest.webmanifest','./assets/favicon.svg','./assets/reuse-plus-logo.svg','./assets/photo-unavailable.svg','./assets/scene-fallback.svg','./assets/experience.css','./assets/refinement.css','./assets/header.css','./assets/lora-italic-latin.woff2','./assets/scene-entry.mjs','./assets/typography.mjs','./assets/inter-latin.woff2'];
 self.addEventListener('install',event=>event.waitUntil(caches.open(CACHE_NAME).then(cache=>cache.addAll(CORE)).then(()=>self.skipWaiting())));
 self.addEventListener('activate',event=>event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key.startsWith('reuse-plus-')&&key!==CACHE_NAME).map(key=>caches.delete(key)))).then(()=>self.clients.claim())));

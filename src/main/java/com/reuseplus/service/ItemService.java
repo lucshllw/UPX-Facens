@@ -32,7 +32,7 @@ public class ItemService {
 
     @Transactional(readOnly = true)
     public List<ItemResponse> search(Long categoryId, ItemType type, String query) {
-        String normalizedQuery = StringUtils.hasText(query) ? query.trim() : null;
+        String normalizedQuery = StringUtils.hasText(query) ? query.trim() : "";
         return itemRepository.search(categoryId, type, normalizedQuery).stream()
                 .map(ItemResponse::from)
                 .toList();

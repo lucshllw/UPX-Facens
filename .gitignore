@@ -24,3 +24,7 @@ RELATORIO_REUSE.md
 uploads/
 .DS_Store
 Thumbs.db
+
+# Browser/CI local evidence
+output/
+.playwright-cli/

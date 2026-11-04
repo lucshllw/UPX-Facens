@@ -17,9 +17,10 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
             join fetch i.category
             where (:categoryId is null or i.category.id = :categoryId)
               and (:type is null or i.type = :type)
-              and (:query is null
+              and (:query = ''
                    or lower(i.title) like lower(concat('%', :query, '%'))
-                   or lower(i.description) like lower(concat('%', :query, '%')))
+                   or lower(i.description) like lower(concat('%', :query, '%'))
+                   or lower(coalesce(i.location, '')) like lower(concat('%', :query, '%')))
             order by i.createdAt desc
             """)
     List<Item> search(@Param("categoryId") Long categoryId,

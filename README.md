@@ -8,72 +8,51 @@ Interface em HTML, CSS e JavaScript, com uma galeria clara, identidade verde, fo
 
 A abertura tem uma cena Three.js com cinco objetos ilustrativos: cadeira, luminária, livros, vaso e mesa pequena. Mova o mouse para inclinar ou arraste na horizontal para girar. No celular, a rolagem vertical continua livre. O botão de embaralhar mostra outro objeto; o botão de pausa também interrompe os movimentos tipográficos. Com a cena focada, use setas, Home, N e espaço. A preferência de movimento reduzido é respeitada.
 
-## Endereços após iniciar localmente
+## Executar completo: Java + PostgreSQL
 
-- Comunidade com servidor e banco local de desenvolvimento: **http://localhost:8080**.
-- Versão que guarda dados apenas no navegador: **http://localhost:4173**.
-
-O rodapé e a janela “Sobre esta comunidade” identificam a versão. Os dados locais do navegador e os dados do servidor são independentes.
-
-## Executar a versão local
-
-```powershell
-npm start
+```sh
+git clone https://github.com/lucshllw/UPX-Facens.git
+cd UPX-Facens
+node tools/setup-env.js
+docker compose up --build -d
 ```
 
-Abra http://localhost:4173. O botão de demonstração fica na janela de acesso. Essa conta começa sem anúncios; não representa uma comunidade conectada.
+Abra **http://localhost:8080**. O servidor Java entrega a interface e a API, e as migracoes criam o banco automaticamente. PostgreSQL e fotos ficam em volumes persistentes. Nenhum usuario ou anuncio e pre-carregado.
 
-## Executar o servidor sem Docker
+Precisa de Docker com Compose v2 e Node.js 20+ para gerar `.env`. O build inclui Java 17 e Maven. Nao e necessario receber as ferramentas privadas do computador do autor.
 
-Pré-requisitos: Node.js para a prévia e as verificações, Java 17 e Maven para o servidor. Na cópia local original, ferramentas portáteis ficam em `.reuse-tools/`; elas não são distribuídas no repositório. O script abaixo depende dessas ferramentas portáteis. Em um clone novo, use os comandos com Java e Maven instalados apresentados a seguir.
+**Para o membro do grupo:** [guia de deploy e trabalho em dupla](docs/DEPLOY.md). [Estrutura SQL](docs/BANCO_SQL.md).
 
-```powershell
-powershell -ExecutionPolicy Bypass -File tools/start-backend.ps1
+## Verificar
+
+```sh
+npm run check
+mvn -B verify
 ```
 
-O comando sincroniza a interface, prepara a aplicação e abre http://localhost:8080. Crie uma conta pela interface. O perfil `dev` usa H2 persistente em `.reuse-data/community.mv.db`; as fotos enviadas ficam em `.reuse-data/uploads/`. Ele não altera um banco PostgreSQL existente.
+Para testar migracoes e fluxos em PostgreSQL real, crie um banco isolado chamado `reuseplus_test`, configure `TEST_DB_URL`, `TEST_DB_USER` e `TEST_DB_PASSWORD`, e rode:
 
-Se preferir usar Java 17 e Maven já instalados:
+```sh
+mvn -B -Ppostgres-it verify
+```
 
-```powershell
+A verificacao automatica no GitHub tambem constroi e inicia a imagem Docker com PostgreSQL. `GET /api/health` responde UP apenas quando o banco aceita conexoes.
+
+## Previa da interface sem servidor Java
+
+`npm start` abre a versao independente em http://localhost:4173. Ela guarda dados somente no navegador e serve para experimentar a interface; para compartilhar contas/anuncios/mensagens entre pessoas use a versao Java/PostgreSQL acima.
+
+## Desenvolvimento H2 opcional
+
+Com Java 17 e Maven instalados:
+
+```sh
 npm run sync
-mvn -Pdev package -DskipTests
+mvn -Pdev package
 java -jar target/reuse-plus-0.0.1-SNAPSHOT.jar --spring.profiles.active=dev --server.address=127.0.0.1
 ```
 
-Executar o JAR evita problemas de codificação em caminhos Windows com acentos. O script usa os arquivos estáticos do projeto para permitir atualizações da interface durante desenvolvimento.
-
-## PostgreSQL
-
-A configuração original continua disponível. São necessárias as ferramentas Java 17, Maven e Docker.
-
-```powershell
-docker compose up -d
-npm run sync
-mvn package -DskipTests
-java -jar target/reuse-plus-0.0.1-SNAPSHOT.jar
-```
-
-Configure `DB_URL`, `DB_USER`, `DB_PASSWORD`, `JWT_SECRET` e `PORT` conforme o ambiente. A migração Flyway V3 adiciona galeria, localização e identificação de quem reservou. V1 e V2 foram preservadas.
-
-## Verificação
-
-```powershell
-npm run check
-mvn -Pdev test
-```
-
-Os testes Java usam um banco em memória separado. Para usar as ferramentas portáteis:
-
-```powershell
-$reuseJdk = Get-ChildItem .reuse-tools/jdk -Directory | Select-Object -First 1
-$env:JAVA_HOME = $reuseJdk.FullName
-& ./.reuse-tools/apache-maven-3.9.9/bin/mvn.cmd -Pdev test '-Dmaven.repo.local=.reuse-tools/repository'
-```
-
-Capturas, logs, relatórios internos, bancos, uploads e ferramentas portáteis ficam somente na cópia local e não são versionados. O repositório contém o código da aplicação, os recursos visuais e os testes.
-
-A página isolada http://localhost:8080/assets/scene-check.html verifica renderização, interações, descarte, movimento reduzido e fallback, sem criar dados da comunidade. Os modelos são geometria original deste projeto; Three.js 0.180.0 usa licença MIT, incluída em `assets/vendor/THREE-LICENSE.txt`.
+Esse perfil conserva o H2 local em `.reuse-data/`; nao e o perfil de deploy e nao altera PostgreSQL existente. O script `tools/start-backend.ps1` e uma alternativa exclusiva da copia original que contem as ferramentas portateis nao versionadas.
 
 ## Funcionalidades
 
@@ -98,6 +77,15 @@ A versão 0.5.1 acrescenta a barra superior preta com fundo verde animado e o s�
 
 O repositório é público em [UPX Facens](https://github.com/lucshllw/UPX-Facens). A disponibilização do código no GitHub não publica automaticamente a aplicação nem o banco de dados.
 
-As credenciais padrão do Docker e a chave JWT de fallback no código são exemplos locais de desenvolvimento. Antes de disponibilizar o servidor em outro ambiente, defina `DB_URL`, `DB_USER`, `DB_PASSWORD` e uma `JWT_SECRET` exclusiva pelas variáveis do ambiente. Não envie arquivos `.env`, senhas reais, tokens, dados da comunidade ou chaves privadas ao repositório.
+O deploy exige credenciais próprias; o script gera os valores sem imprimi-los. O fallback JWT existe somente no perfil dev. Antes de disponibilizar o servidor em outro ambiente, defina `DB_URL`, `DB_USER`, `DB_PASSWORD` e uma `JWT_SECRET` exclusiva pelas variáveis do ambiente. Não envie arquivos `.env`, senhas reais, tokens, dados da comunidade ou chaves privadas ao repositório.
 
 Three.js e Lora mantêm suas licenças em `assets/vendor/THREE-LICENSE.txt` e `assets/LORA-LICENSE.txt`. As fontes e a procedência dos recursos visuais estão documentadas em `assets/SCENE-RESOURCES.md`.
+
+## Verificacao da entrega SQL (03/11/2026)
+
+- 12 testes Java aprovados: 8 verificacoes no ambiente H2 e 4 no PostgreSQL 16 real, incluindo concorrencia de reservas e migracoes Flyway.
+- 5 testes frontend aprovados, alem de sintaxe, contraste, sincronizacao e limites de tamanho.
+- 34 verificacoes HTTP contra o JAR conectado ao PostgreSQL: cadastro/login, fotos, CRUD, favoritos, reservas e privacidade de mensagens.
+- Sessao expirada nao bloqueia mais o catalogo publico; o navegador permite continuar explorando e entrar novamente.
+
+[Ver a verificacao automatica no GitHub](https://github.com/lucshllw/UPX-Facens/actions/workflows/ci.yml). O resultado de cada execucao esta no proprio Actions; envio do codigo nao e confirmacao de hospedagem externa. Nenhum deploy em provedor foi ativado nesta entrega.

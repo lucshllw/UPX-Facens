@@ -1,0 +1,12 @@
+.git
+.github
+.reuse-*
+node_modules
+target
+validation
+output
+.env
+.env.*
+*.log
+*.db
+RELATORIO_REUSE.md

@@ -26,6 +26,10 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+    private final String allowedOrigins;
+    public SecurityConfig(@org.springframework.beans.factory.annotation.Value("${app.cors.allowed-origins:http://localhost:8080,http://localhost:5173}") String allowedOrigins) {
+        this.allowedOrigins = allowedOrigins;
+    }
     @Bean
     SecurityFilterChain securityFilterChain(
             HttpSecurity http,
@@ -37,9 +41,20 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
+                .exceptionHandling(errors -> errors
+                    .authenticationEntryPoint((request, response, exception) -> {
+                        response.setStatus(401);
+                        response.setContentType("application/json;charset=UTF-8");
+                        response.getWriter().write("{\"status\":401,\"message\":\"Entre novamente para continuar.\"}");
+                    })
+                    .accessDeniedHandler((request, response, exception) -> {
+                        response.setStatus(403);
+                        response.setContentType("application/json;charset=UTF-8");
+                        response.getWriter().write("{\"status\":403,\"message\":\"Voce nao tem permissao para esta acao.\"}");
+                    }))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/index.html", "/login.html", "/register.html").permitAll()
-                        .requestMatchers("/styles.css", "/script.js", "/app.js", "/auth.js", "/favicon.ico", "/sw.js", "/manifest.webmanifest", "/assets/**", "/uploads/**", "/api/runtime").permitAll()
+                        .requestMatchers("/styles.css", "/script.js", "/app.js", "/auth.js", "/favicon.ico", "/sw.js", "/manifest.webmanifest", "/assets/**", "/uploads/**", "/api/runtime", "/api/health", "/robots.txt", "/sitemap.xml").permitAll()
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/items/**", "/api/categories/**").permitAll()
                         .anyRequest().authenticated()
@@ -79,7 +94,7 @@ public class SecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:8080", "http://localhost:5173"));
+        configuration.setAllowedOrigins(java.util.Arrays.stream(allowedOrigins.split(",")).map(String::trim).filter(origin -> !origin.isEmpty()).toList());
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

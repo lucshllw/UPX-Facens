@@ -25,6 +25,24 @@ public class RestExceptionHandler {
         return ResponseEntity.badRequest().body(error(HttpStatus.BAD_REQUEST, message));
     }
 
+    @ExceptionHandler({org.springframework.http.converter.HttpMessageNotReadableException.class,
+            org.springframework.web.method.annotation.MethodArgumentTypeMismatchException.class,
+            org.springframework.web.bind.MissingServletRequestParameterException.class,
+            org.springframework.web.multipart.support.MissingServletRequestPartException.class})
+    ResponseEntity<Map<String, Object>> handleBadRequest(Exception exception) {
+        return ResponseEntity.badRequest().body(error(HttpStatus.BAD_REQUEST, "Requisicao invalida. Confira os dados enviados."));
+    }
+
+    @ExceptionHandler(org.springframework.web.multipart.MaxUploadSizeExceededException.class)
+    ResponseEntity<Map<String, Object>> handleUploadLimit(Exception exception) {
+        return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE).body(error(HttpStatus.PAYLOAD_TOO_LARGE, "Adicione uma foto de ate 8 MB."));
+    }
+
+    @ExceptionHandler(org.springframework.dao.DataIntegrityViolationException.class)
+    ResponseEntity<Map<String, Object>> handleConflict(Exception exception) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(error(HttpStatus.CONFLICT, "Os dados foram alterados ou ja existem. Atualize e tente novamente."));
+    }
+
     @ExceptionHandler(Exception.class)
     ResponseEntity<Map<String, Object>> handleUnexpected(Exception exception) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

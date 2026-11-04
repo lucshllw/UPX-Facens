@@ -1,6 +1,6 @@
 {
   "name": "reuse-plus-static-preview",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "private": true,
   "description": "ReUse+ — galeria circular com versão local e servidor Java.",
   "scripts": {
